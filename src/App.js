@@ -5,7 +5,7 @@ import './App.css';
 
 function App() {
   const API_URL = 'https://api.themoviedb.org/3'
-  const API_KEY = '352790dd8e3612609ee6e1921115945d'
+  const API_KEY = '9ad672538cc4a1d62865240f6de1fa69' //9ad672538cc4a1d62865240f6de1fa69
   const URL_IMAGE = 'https://image.tmdb.org/t/p/original'
 
   const [movies, setMovies] = useState([])
