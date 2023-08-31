@@ -7,10 +7,15 @@ function App() {
   const API_URL = 'https://api.themoviedb.org/3'
   const API_KEY = '9ad672538cc4a1d62865240f6de1fa69' //9ad672538cc4a1d62865240f6de1fa69
   const URL_IMAGE = 'https://image.tmdb.org/t/p/original'
+  const IMAGE_PATH = 'https://image.tmdb.org/t/p/original'
+
+  //VARIABLE DE ESTADO
 
   const [movies, setMovies] = useState([])
   const [searchKey, setSearchKey] = useState("")
+  const [trailer, setTrailer] = useState(null);
   const [movie, setMovie] = useState({ title: "Cargando película" });
+  const [playing, setPlaying] = useState(false);
 
   const fetchMovies = async (searchKey) => {
     try {
@@ -23,11 +28,45 @@ function App() {
       });
       setMovies(results);
       setMovie(results[0]);
+
+      if(results.length){
+        await fetchMovie(results[0].id);
+      }
+      
     } catch (error) { //control de errores
       alert("Error al cargar las películas:", error);
       //console.error("Error al cargar las películas:", error);
     }
+
+   
+
   }
+
+
+    const fetchMovie = async(id) => { //funcion para peticion de un solo objeto
+      const {data} = await axios.get(`${API_URL}/movie/${id}`,{
+        params: {
+          api_key: API_KEY,
+          append_to_response: "videos"
+        }
+      });
+
+      if(data.videos && data.videos.results){
+        const trailer = data.videos.results.find(
+          (vid) => vid.name === "Official Trailer"
+        );
+         setTrailer(trailer? trailer : data.videos.results[0]);
+      }
+
+      setMovie(data)
+
+    }
+
+      const selectMovie = async(movie)=>{
+        fetchMovie(movie.id)
+        setMovie(movie)
+        window.scrollTo(0,0);
+      }
 
 
   //filtro de las peliculas
@@ -105,6 +144,7 @@ function App() {
           </div>
         </div>
         <p className='mt-3'>&copy; {new Date().getFullYear()} PELIS TRAILERS. Todos los derechos reservados.</p>
+        <p className='mt-3'>Creado por: Manuel Peva Vela</p>
       </footer>
     </div>
   );
