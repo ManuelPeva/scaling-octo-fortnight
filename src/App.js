@@ -29,6 +29,7 @@ function App() {
     }
   }
 
+
   //filtro de las peliculas
   const searchMovies = (e) => {
     e.preventDefault();
@@ -39,9 +40,6 @@ function App() {
     fetchMovies();
   }, []);
 
-  useEffect(() => {
-    fetchMovies();
-  }, []);
 
   return (
     <div>
