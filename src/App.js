@@ -23,11 +23,21 @@ function App() {
       });
       setMovies(results);
       setMovie(results[0]);
-    } catch (error) {
+    } catch (error) { //control de errores
       alert("Error al cargar las películas:", error);
       //console.error("Error al cargar las películas:", error);
     }
   }
+
+//filtro de las peliculas
+const searchMovies = (e)=>{
+  e.preventDefault();
+  fetchMovies(searchKey)
+}
+  
+useEffect(()=>{ 
+  fetchMovies();
+},[]);
 
   useEffect(() => {
     fetchMovies();
@@ -35,6 +45,12 @@ function App() {
 
   return (
     <div>
+
+      <h2 className='text-center mt-5 mb-5'>pelis Trailers </h2>
+      <form className='container mb-4' onSubmit={searchMovies}> 
+        <input type="text" placeholder='Buscar' onChange={(e)=> setSearchKey(e.target.value)} />
+        <button>Buscar</button>
+      </form>
       <div className='container mt-3'>
         <div className='row'>
           {movies.map((movie) => (
